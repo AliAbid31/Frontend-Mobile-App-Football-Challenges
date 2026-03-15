@@ -1,0 +1,1 @@
+export const API_URL = "https://backend-mobile-app-football-challen.vercel.app";

@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
+import { useFonts, VT323_400Regular } from '@expo-google-fonts/vt323';
+
+// On importe votre nouveau fichier Home
+import Home from './src/pages/Home'; 
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  // Cette ligne charge la police !
+  let [fontsLoaded] = useFonts({
+    VT323_400Regular,
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  // Si la police charge encore, on affiche un écran noir
+  if (!fontsLoaded) {
+    return <View style={{ flex: 1, backgroundColor: 'black' }} />;
+  }
+
+  // Une fois chargée, on affiche votre page Home
+  return <Home />;
+}
