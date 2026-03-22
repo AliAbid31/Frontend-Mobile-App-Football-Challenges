@@ -4,8 +4,7 @@
     "slug": "football-challenges",
     "scheme": "footballchallenges",
     "version": "1.0.0",
-    "newArchEnabled": false,
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
@@ -34,7 +33,7 @@
         "expo-build-properties",
         {
           "android": {
-            "kotlinVersion": "1.9.25"
+            "kotlinVersion": "2.0.21"
           }
         }
       ]

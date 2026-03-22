@@ -288,9 +288,10 @@ const clubs = [
       name2 : "PSG",
       Ligue1 : 13,
       Leagues : 13,
+      ChampionsLeagues: 1,
       DomesticCups : 38,
-      InternationalCups : 3, // A confirmer
-      Total : 54, // A confirmer
+      InternationalCups : 5, 
+      Total : 56, 
       image: require("../../assets/modified_logos/PSG_60x60.png")
     },
     {

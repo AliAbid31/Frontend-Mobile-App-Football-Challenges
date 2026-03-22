@@ -41,7 +41,13 @@ export default function TrophiesChallenge({ onBack }: { onBack: () => void }) {
   const MAX_ROTATIONS = 15;
   const CHALLENGE_GOAL = 1000;
 
-  // --- ÉTAPE 1 : CORRECTION DU USEEFFECT POUR INITIALISER LE JEU ---
+  const getButtonWidth = () => {
+    if (vw > 1000) return '19%'; // 5 colonnes sur grand écran PC
+    if (vw > 768) return '24.5%';    // 4 colonnes sur petit PC / iPad
+    if (vw > 450) return '32%';    // 3 colonnes sur grand smartphone
+    return '48%';                  // 2 colonnes sur petit smartphone
+  };
+
   useEffect(() => {
     initGameInputs(); // Créer les boutons
     fetchLeaderboard(); // Charger le score
@@ -196,13 +202,37 @@ export default function TrophiesChallenge({ onBack }: { onBack: () => void }) {
       <View style={styles.inputsContainer}>
         {gameInputs.map((item, index) => (
           <TouchableOpacity 
-            key={index} 
-            style={[styles.inputButton, { width: vw > 600 ? '19%' : '48%' }, item.locked && styles.inputButtonLocked]}
-            onPress={() => handleInputClick(index)}
+              key={index} 
+              style={[
+              styles.inputButton, 
+              { width: getButtonWidth() }, 
+              item.locked && styles.inputButtonLocked,
+              gameStatus === 'lost' && styles.inputButtonLost // <--- Ajout ici
+              ]}
+              onPress={() => handleInputClick(index)}
+              activeOpacity={0.7}
           >
-            <Text style={[styles.inputButtonText, item.locked && {fontSize: 10, color: '#00ffaa'}]} numberOfLines={1}>
-              {item.locked ? item.value : item.placeholder}
-            </Text>
+              {item.locked ? (
+              <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false} 
+                  contentContainerStyle={styles.scrollTextContainer}
+              >
+                  <Text style={[
+                  styles.inputButtonTextLocked,
+                  gameStatus === 'lost' && styles.inputButtonTextLost // <--- Texte en rouge si perdu
+                  ]}>
+                  {item.value}
+                  </Text>
+              </ScrollView>
+              ) : (
+              <Text style={[
+                  styles.inputButtonText,
+                  gameStatus === 'lost' && styles.inputButtonTextLost // <--- Texte en rouge si perdu
+              ]}>
+                  {item.placeholder}
+              </Text>
+              )}
           </TouchableOpacity>
         ))}
       </View>
@@ -231,5 +261,22 @@ const styles = StyleSheet.create({
   inputButton: { height: 35, backgroundColor: '#111', borderWidth: 1, borderColor: '#00aaff', borderRadius: 5, justifyContent: 'center', alignItems: 'center' },
   inputButtonLocked: { borderColor: '#00ffaa', backgroundColor: 'rgba(0,255,170,0.1)' },
   inputButtonText: { color: '#b0c4de', fontFamily: 'Jaro_400Regular', fontSize: 12 },
-  scoreDisplay: { fontSize: 36, fontFamily: 'Jaro_400Regular', marginTop: 20, marginBottom: 40 }
+  scoreDisplay: { fontSize: 36, fontFamily: 'Jaro_400Regular', marginTop: 20, marginBottom: 40 },
+  inputButtonLost: {
+    borderColor: '#ff3860',
+    backgroundColor: 'rgba(255, 56, 96, 0.1)', // Optionnel : un léger fond rouge transparent
+  },
+  inputButtonTextLost: {
+    color: '#ff3860',
+  },
+  inputButtonTextLocked: {
+    color: '#00ffaa',
+    fontFamily: 'Jaro_400Regular',
+    fontSize: 14,
+  },
+  scrollTextContainer: {
+    flexGrow: 1,
+    alignItems: 'center', 
+    paddingHorizontal: 8,
+  },
 });
